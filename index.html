@@ -176,6 +176,25 @@
     font-size: 0.75rem; padding: 0.5rem 0.9rem;
   }
   .photo-controls button:hover { background: #6b1f1c; color: #fff; }
+
+  /* --- Group-type + theme personalization --- */
+  .personalize-field { margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid #d7dedc; }
+  .personalize-field:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+  .personalize-field > label:not(.radio-pill):not(.check-pill) {
+    display: block; font-weight: 700; font-size: 0.68rem;
+    letter-spacing: 0.06em; text-transform: uppercase; color: #8a938f; margin-bottom: 0.6rem;
+  }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .radio-pill, .check-pill {
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+    border: 1px solid #d7dedc; border-radius: 999px; padding: 0.45rem 0.9rem;
+    font-size: 0.85rem; background: #fff; transition: border-color 0.15s, background 0.15s;
+  }
+  .radio-pill:has(input:checked), .check-pill:has(input:checked) {
+    border-color: #b02826; background: #fbeae9; color: #6b1f1c; font-weight: 600;
+  }
+  .radio-pill input, .check-pill input { margin: 0; accent-color: #b02826; }
+  .theme-hint { font-size: 0.72rem; color: #8a938f; margin-top: 0.5rem; }
 </style>
 </head>
 <body>
@@ -191,7 +210,7 @@
 
   <section id="screen-passphrase" class="screen active">
     <h1>Build Your Family Game Night Deck</h1>
-    <p class="sub">A 52-card conversation-starter deck for the whole table — would-you-rathers, this-or-thats, memory-lane questions, deep talks, and silly random prompts, all age-flexible for a mixed-age family. <a href="https://www.etsy.com" target="_blank" rel="noopener">Buy on Etsy</a> to get your order number, then enter it below.</p>
+    <p class="sub">A personalized conversation card game — would-you-rathers, this-or-thats, memory-lane questions, deep talks, and silly random prompts. No winners, no losers, no scoring — just real conversation, picked for whoever you're playing with. <a href="https://www.etsy.com" target="_blank" rel="noopener">Buy on Etsy</a> to get your order number, then enter it below.</p>
     <p class="sub">Enter your Etsy order number to get started — find it in your Etsy purchase confirmation or under Purchases &amp; Reviews on Etsy.</p>
     <form id="passphrase-form">
       <input type="text" id="passphrase-input" placeholder="Etsy order number" autocomplete="off">
@@ -202,29 +221,37 @@
 
   <section id="screen-form" class="screen">
     <h1>Make It Yours</h1>
-    <p class="sub">Every deck ships with the same 52 cards — a how-to-play card plus 50 conversation-starter prompts across 5 categories. Add your family or group name below and we'll print it right onto your own dedicated cover card.</p>
-    <form id="name-form">
+    <p class="sub">Every deck has 52 cards, but which 50 conversation cards you get is picked for you — from a pool of 100 — based on who this is for and what you care about.</p>
+    <form id="details-form">
       <div class="field-block">
         <label for="buyer-name">Family or group name (optional)</label>
         <input type="text" id="buyer-name" placeholder="e.g. The Martinez Family" autocomplete="off" maxlength="40">
         <span class="hint">Printed on your cover card. Leave blank for a plain "Family Game Night Deck" cover.</span>
       </div>
-      <div class="error" id="name-error"></div>
+
+      <div class="personalize-field">
+        <label>Who's this deck for?</label>
+        <div class="pill-row" id="groupTypeOptions"></div>
+      </div>
+
+      <div class="personalize-field">
+        <label>What does your group care about? (pick up to 4)</label>
+        <div class="pill-row" id="themeOptions"></div>
+        <div class="theme-hint" id="themeHint"></div>
+      </div>
+
+      <div class="error" id="details-error"></div>
       <button type="submit">Build My Deck</button>
     </form>
   </section>
 
   <section id="screen-results" class="screen">
     <h1 id="results-name">Your Deck Is Ready</h1>
-    <p class="sub">Your 52-card Family Game Night Deck includes:</p>
+    <p class="sub">Your 52-card conversation card game includes:</p>
     <ul id="results-summary">
       <li>1 personalized cover card</li>
       <li>1 how-to-play card</li>
-      <li>10 Would You Rather cards</li>
-      <li>10 This or That cards</li>
-      <li>10 Memory Lane cards</li>
-      <li>10 Deep Talk cards</li>
-      <li>10 Silly &amp; Random cards</li>
+      <li>50 conversation cards, picked for your group from a pool of 100 — 10 each of Would You Rather, This or That, Memory Lane, Deep Talk, and Silly &amp; Random</li>
     </ul>
 
     <div class="backcard-field">

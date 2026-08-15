@@ -1,8 +1,10 @@
-// Family Game Night Deck — evergreen fixed-content deck. No quiz, no
-// scoring, no icons: every buyer gets the same 52 cards from data.js, plus
-// a personalized cover built from a single optional family/group-name
-// field. This is deliberately the shop's simplest wizard for the FRONT
-// content — see roadmap/product-roadmap.html's Full Roadmap entry for why.
+// Family Game Night Deck — a personalized conversation card game. No quiz
+// SCORING happens during play (no winners, no losers) — but the DECK
+// ITSELF is personalized: the buyer tells us what kind of group this is
+// for and what they care about, and buildDeck() narrows a 100-prompt pool
+// (20 per category, see data.js) down to the 50 cards that actually fit,
+// 10 per category. Every buyer draws from the same pool but very likely
+// ends up with a different final deck.
 //
 // Card-back customization (pattern/color/photo/text) uses the identical
 // system every other GoodStockPress deck offers — ported verbatim from
@@ -14,6 +16,8 @@ const AUTH_API_BASE = "https://deck-of-us.vercel.app/api";
 const ACCESS_TOKEN_KEY = "familyGameNightDeckToken";
 
 let buyerName = "";
+let groupType = "family";
+let selectedThemes = [];
 
 let backPattern = "dots";
 let backColorId = "red";
@@ -26,10 +30,12 @@ let backPhoto = null;
 if (typeof document !== "undefined") {
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("passphrase-form").addEventListener("submit", handlePassphraseSubmit);
-    document.getElementById("name-form").addEventListener("submit", handleNameSubmit);
+    document.getElementById("details-form").addEventListener("submit", handleDetailsSubmit);
     document.getElementById("download-btn").addEventListener("click", downloadPdf);
     document.getElementById("start-over-btn").addEventListener("click", () => location.reload());
 
+    renderGroupTypeOptions();
+    renderThemeCheckboxes();
     renderBackSwatches();
     renderBackcardPreview();
     document.getElementById("backLabelInput").addEventListener("input", renderBackcardPreview);
@@ -102,7 +108,46 @@ if (typeof document !== "undefined") {
   })();
 }
 
-function handleNameSubmit(e) {
+// --- Group-type + theme personalization (drives which cards get picked,
+// not just cosmetic text) -----------------------------------------------
+
+function renderGroupTypeOptions() {
+  const wrap = document.getElementById("groupTypeOptions");
+  wrap.innerHTML = FAMILY_GAME_DATA.groupTypes.map((g) => {
+    const checked = g.id === groupType ? " checked" : "";
+    return `<label class="radio-pill"><input type="radio" name="groupType" value="${g.id}"${checked}> ${g.label}</label>`;
+  }).join("");
+  wrap.querySelectorAll('input[name="groupType"]').forEach((input) => {
+    input.addEventListener("change", (e) => { groupType = e.target.value; });
+  });
+}
+
+const MAX_THEMES = 4;
+
+function renderThemeCheckboxes() {
+  const wrap = document.getElementById("themeOptions");
+  wrap.innerHTML = FAMILY_GAME_DATA.themes.map((t) => {
+    const checked = selectedThemes.includes(t.id) ? " checked" : "";
+    return `<label class="check-pill"><input type="checkbox" name="theme" value="${t.id}"${checked}> ${t.label}</label>`;
+  }).join("");
+  wrap.querySelectorAll('input[name="theme"]').forEach((input) => {
+    input.addEventListener("change", (e) => {
+      if (e.target.checked) {
+        if (selectedThemes.length >= MAX_THEMES) {
+          e.target.checked = false;
+          return;
+        }
+        selectedThemes.push(e.target.value);
+      } else {
+        selectedThemes = selectedThemes.filter((id) => id !== e.target.value);
+      }
+      document.getElementById("themeHint").textContent = `${selectedThemes.length}/${MAX_THEMES} selected`;
+    });
+  });
+  document.getElementById("themeHint").textContent = `${selectedThemes.length}/${MAX_THEMES} selected`;
+}
+
+function handleDetailsSubmit(e) {
   e.preventDefault();
   buyerName = document.getElementById("buyer-name").value.trim();
   document.getElementById("results-name").textContent = buyerName ? `${buyerName}'s Deck Is Ready` : "Your Deck Is Ready";
@@ -733,18 +778,38 @@ function drawCardBackPage(doc, label, photo, patternId, color, showText) {
   });
 }
 
+// --- Personalized selection --------------------------------------------
+// The actual personalization engine: narrows each category's 20-prompt
+// pool down to the 10 that go in this buyer's deck. Group type filters
+// which prompts are even eligible (group-specific prompts are tagged with
+// groupFit; untagged prompts are universal and always eligible). Among
+// eligible prompts, buyer-selected themes score each one by how many
+// chosen themes it matches; highest-scoring 10 win. Ties keep the pool's
+// written order (Array.sort is stable), so a buyer who picks zero themes
+// still gets a sensible, deterministic generalist mix rather than an error.
+function selectPromptsForCategory(categoryId, groupTypeId, themeIds) {
+  const pool = FAMILY_GAME_DATA.prompts.filter((p) => p.category === categoryId);
+  const eligible = pool.filter((p) => !p.groupFit || p.groupFit.length === 0 || p.groupFit.includes(groupTypeId));
+  const scored = eligible.map((p) => ({
+    prompt: p,
+    score: (p.themes || []).filter((t) => themeIds.includes(t)).length,
+  }));
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, 10).map((s) => s.prompt);
+}
+
 // --- Deck assembly ----------------------------------------------------------
-// Fixed order for every buyer: cover, how-to-play, then all 50 prompt
-// cards grouped by category. Buyers are told in the print instructions to
-// shuffle before playing, so print-order category grouping doesn't leak
-// into play order.
+// Fixed order for every buyer: cover, how-to-play, then the 50 prompt
+// cards selectPromptsForCategory() picked, grouped by category. Buyers are
+// told in the print instructions to shuffle before playing, so print-order
+// category grouping doesn't leak into play order.
 
 function buildDeck() {
   const cards = [];
   cards.push({ type: "cover" });
   cards.push({ type: "howtoplay", card: FAMILY_GAME_DATA.howToPlay });
   FAMILY_GAME_DATA.promptCategories.forEach((cat) => {
-    FAMILY_GAME_DATA.prompts.filter((p) => p.category === cat.id).forEach((p) => {
+    selectPromptsForCategory(cat.id, groupType, selectedThemes).forEach((p) => {
       cards.push({ type: "prompt", card: p, categoryLabel: cat.label });
     });
   });
