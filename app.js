@@ -249,13 +249,6 @@ function cardFrame(doc, x, y) {
   doc.roundedRect(x, y, CARD_W, CARD_H, 0.08, 0.08, "S");
 }
 
-function footerTag(doc, cx, bottomY) {
-  doc.setFont("Poppins", "normal");
-  doc.setFontSize(6.5);
-  doc.setTextColor(...MUTED);
-  centeredSpacedText(doc, SHOP_NAME.toUpperCase(), cx, bottomY, 0.02);
-}
-
 // --- Card-type drawing functions (fronts) ----------------------------------
 
 function drawCoverCard(doc, x, y, name) {
@@ -283,7 +276,6 @@ function drawCoverCard(doc, x, y, name) {
   doc.setDrawColor(...DIVIDER);
   doc.setLineWidth(0.01);
   doc.line(x + 0.5, y + CARD_H - 0.55, x + CARD_W - 0.5, y + CARD_H - 0.55);
-  footerTag(doc, cx, y + CARD_H - 0.28);
 }
 
 function drawHowToPlayCard(doc, x, y, card) {
@@ -307,8 +299,6 @@ function drawHowToPlayCard(doc, x, y, card) {
   doc.setFontSize(bodySize);
   doc.setTextColor(...INK);
   doc.text(bodyLines, cx, bodyTop, { align: "center", lineHeightFactor: 1.45 });
-
-  footerTag(doc, cx, y + CARD_H - 0.22);
 }
 
 function drawPromptCard(doc, x, y, card, categoryLabel) {
@@ -333,8 +323,6 @@ function drawPromptCard(doc, x, y, card, categoryLabel) {
   doc.setFontSize(bodySize);
   doc.setTextColor(...INK);
   doc.text(bodyLines, cx, bodyTop + (bodyMaxHeight - blockH) / 2 + (bodySize / 72) * 0.9, { align: "center", lineHeightFactor: 1.4 });
-
-  footerTag(doc, cx, y + CARD_H - 0.22);
 }
 
 function drawInstructionsPage(doc, name) {
