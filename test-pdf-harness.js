@@ -204,5 +204,34 @@ const outPath = path.join(DIR, "test-output.pdf");
 fs.writeFileSync(outPath, Buffer.from(pdfDoc.output("arraybuffer")));
 console.log("Wrote " + outPath);
 
+// --- Cricut cut-file SVG export --------------------------------------------
+// buildCutFileSVG() is pure geometry (no DOM/JSZip), safe to load and call
+// directly in the same sandbox. downloadCutFiles() itself isn't exercised
+// here since it needs a real browser (JSZip, Blob, anchor click).
+vm.runInContext(fs.readFileSync(path.join(DIR, "cricut-export.js"), "utf8"), sandbox, { filename: "cricut-export.js" });
+const buildCutFileSVG = vm.runInContext("buildCutFileSVG", sandbox);
+
+const fullPageSVG = buildCutFileSVG(CARDS_PER_PAGE);
+check(fullPageSVG.startsWith("<?xml") && fullPageSVG.includes('<svg xmlns="http://www.w3.org/2000/svg"'), "cut-file SVG has a well-formed XML/SVG header");
+check(fullPageSVG.includes('width="8.5in" height="11in" viewBox="0 0 8.5 11"'), "cut-file SVG page size matches the Letter-size PDF page exactly");
+const rectCount = (fullPageSVG.match(/<rect /g) || []).length;
+check(rectCount === CARDS_PER_PAGE, `full-page cut file has ${rectCount} card outlines, expected ${CARDS_PER_PAGE}`);
+
+let slotMismatch = null;
+for (let pos = 0; pos < CARDS_PER_PAGE; pos++) {
+  const [x, y] = slotXY(pos);
+  if (!fullPageSVG.includes(`x="${x}" y="${y}" width="${CARD_W_T}" height="${CARD_H_T}"`)) { slotMismatch = pos; break; }
+}
+check(slotMismatch === null, slotMismatch === null
+  ? "every card outline sits at the exact same coordinates the PDF prints that card at"
+  : `card outline for slot ${slotMismatch} doesn't match slotXY(${slotMismatch}) — cut lines would miss the printed card`);
+
+const partialPageSVG = buildCutFileSVG(2);
+const partialRectCount = (partialPageSVG.match(/<rect /g) || []).length;
+check(partialRectCount === 2, `partial last-page cut file only outlines the ${2} real cards on it, not all ${CARDS_PER_PAGE} slots (got ${partialRectCount})`);
+
+const totalFrontCutPages = Math.ceil(deck.length / CARDS_PER_PAGE);
+check(totalFrontCutPages === expectedCardPages, `cut-file front-page count (${totalFrontCutPages}) matches the PDF's own front-page count (${expectedCardPages})`);
+
 console.log(failures === 0 ? "\nALL CHECKS PASSED" : `\n${failures} CHECK(S) FAILED`);
 process.exit(failures === 0 ? 0 : 1);

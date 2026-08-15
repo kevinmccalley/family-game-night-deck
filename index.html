@@ -98,6 +98,7 @@
   .print-lab-hint { max-width: 640px; margin: 0.6rem auto 0; text-align: center; font-size: 0.8rem; color: #8a938f; }
   .print-lab-hint a { color: #b02826; text-decoration: underline; text-underline-offset: 2px; }
   .print-lab-hint a:hover { color: #23282a; }
+  .cricut-hint { max-width: 640px; margin: 0.6rem auto 0; text-align: center; font-size: 0.8rem; color: #8a938f; }
 
   /* --- Card back customization (same pattern/color system every GoodStockPress deck offers) --- */
   .backcard-field { margin-top: 2rem; padding-top: 1.75rem; border-top: 1px solid #d7dedc; }
@@ -296,8 +297,10 @@
     <div class="actions-bar">
       <div class="actions">
         <button id="download-btn">Download the PDF</button>
+        <button id="cricut-download-btn" class="secondary" type="button">Download Cricut Cut Files (SVG)</button>
         <button id="start-over-btn" class="secondary" type="button">Start Over</button>
       </div>
+      <p class="cricut-hint">Own a Cricut or similar cutting machine? The SVG files above match your printed pages exactly — load your printed sheet on the mat and cut, no scissors or corner punch needed.</p>
       <p class="print-lab-hint">Ready to print? <a href="https://goodstockpress.vercel.app/?product=family-game-night-deck" target="_blank" rel="noopener">Find your paper &amp; printing options at Print Lab →</a></p>
     </div>
   </section>
@@ -305,8 +308,10 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="data.js"></script>
 <script src="fonts.js"></script>
 <script src="app.js"></script>
+<script src="cricut-export.js"></script>
 </body>
 </html>
