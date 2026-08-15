@@ -48,7 +48,7 @@ check(FAMILY_GAME_DATA.prompts.length === 100, `100 total prompts in the pool (g
 check(FAMILY_GAME_DATA.groupTypes.length === 6, `6 group types (got ${FAMILY_GAME_DATA.groupTypes.length})`);
 check(FAMILY_GAME_DATA.themes.length === 9, `9 themes (got ${FAMILY_GAME_DATA.themes.length})`);
 check(!!FAMILY_GAME_DATA.howToPlay && !!FAMILY_GAME_DATA.howToPlay.title && !!FAMILY_GAME_DATA.howToPlay.body, "how-to-play card has a title and body");
-check(/no winner/i.test(FAMILY_GAME_DATA.howToPlay.body), "how-to-play card states there's no winner (Kevin's honesty requirement)");
+check(/no keeping score/i.test(FAMILY_GAME_DATA.howToPlay.body), "how-to-play card states there's no keeping score (Kevin's honesty requirement, non-polarizing wording)");
 
 FAMILY_GAME_DATA.promptCategories.forEach((cat) => {
   const count = FAMILY_GAME_DATA.prompts.filter((p) => p.category === cat.id).length;

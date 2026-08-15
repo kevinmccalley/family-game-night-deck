@@ -1,5 +1,5 @@
 // Family Game Night Deck — a personalized CONVERSATION CARD GAME. No
-// winners, no losers, and no scoring during play — but the DECK ITSELF is
+// keeping score during play — but the DECK ITSELF is
 // personalized through a real wizard: the buyer tells us what kind of
 // group this is for and what they care about, and the wizard narrows a
 // 100-prompt pool down to the 50 cards that actually fit, 10 per category.
@@ -166,6 +166,6 @@ const FAMILY_GAME_DATA = {
 
   howToPlay: {
     title: "How to Play",
-    body: "Shuffle the deck and place it face down. Take turns drawing a card and reading it out loud — everyone at the table answers, one at a time. No skipping a card once it's drawn. There's no scoring and no winner — just whoever's turn it is next. Play for five minutes or all night, however long the conversation keeps going."
+    body: "Shuffle the deck and place it face down. Take turns drawing a card and reading it out loud — everyone at the table answers, one at a time. No skipping a card once it's drawn. There's no keeping score — just whoever's turn it is next. Play for five minutes or all night, however long the conversation keeps going."
   }
 };

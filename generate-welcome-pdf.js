@@ -85,8 +85,8 @@ y += ledeLines.length * 0.22 + 0.45;
 const steps = [
   ["Go to the link below", "Works on your phone, tablet, or computer."],
   ["Enter your Etsy order number", "Find it in your Etsy purchase confirmation email, or under Purchases & Reviews on Etsy — it looks like #1234567890."],
-  ["Add your family or group name", "Totally optional — the deck works just as well blank."],
-  ["Download the deck", "52 cards, built instantly as a print-ready PDF."],
+  ["Tell us who it's for", "Family, friends, a couple, and more — plus a few themes your group cares about."],
+  ["Download the deck", "50 cards picked for your group from a pool of 100, built instantly as a print-ready PDF."],
 ];
 
 steps.forEach(([title, body], i) => {
