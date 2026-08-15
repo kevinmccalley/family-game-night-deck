@@ -1,6 +1,6 @@
 # Family Game Night Deck — Etsy listing copy
 
-**Title:** Conversation Card Game, Personalized Deck for Family or Friends, No Winners No Losers, Would You Rather Cards, Digital PDF
+**Title:** Conversation Card Game, Personalized Deck for Family or Friends, No Keeping Score, Would You Rather Cards, Digital PDF
 
 **Price:** $14.99 *(placeholder — matches Habit-Builder Card Deck/Pet Tribute Deck/Build Your Own Sports Card's tier for a similarly-scoped evergreen deck; needs Kevin's confirmation before publishing)*
 **SKU:** GSP-FGN-001
@@ -11,7 +11,7 @@
 
 ## Description
 
-A conversation card game — not a trivia box, not a competition. There's no winners and no losers here, just real conversation, picked specifically for your people. Tell us who this is for (family, friends, a couple, a faith group, coworkers, or anyone else) and what your group cares about, and we pull from a bank of 100 prompts to build the 50 cards that actually fit — would-you-rathers, this-or-thats, memory-lane questions, deep talks, and silly random prompts, all written to work across a mixed-age table.
+A conversation card game — not a trivia box, not a competition. Just real conversation, no keeping score, picked specifically for your people. Tell us who this is for (family, friends, a couple, a faith group, coworkers, or anyone else) and what your group cares about, and we pull from a bank of 100 prompts to build the 50 cards that actually fit — would-you-rathers, this-or-thats, memory-lane questions, deep talks, and silly random prompts, all written to work across a mixed-age table.
 
 **How it works:**
 1. Purchase and get your instant welcome PDF with your access link
@@ -21,7 +21,7 @@ A conversation card game — not a trivia box, not a competition. There's no win
 
 **What you get:**
 - 1 personalized cover card
-- 1 how-to-play card — states plainly, no winners, no losers, no scoring
+- 1 how-to-play card — states plainly, just real talk, no keeping score
 - 50 conversation cards, picked for your group from a pool of 100 — 10 each of Would You Rather, This or That, Memory Lane, Deep Talk, and Silly & Random
 - A fully customizable card back — pick a pattern, a color, or add your own photo
 - Standard 2.5 x 3.5in card size — fits any card sleeve or a deck box on the shelf between game nights
